@@ -9,6 +9,11 @@ import java.sql.SQLException;
 public class MarketRowMapper implements RowMapper<Market> {
     @Override
     public Market mapRow(ResultSet rs, int rowNum) throws SQLException {
-        return null;
+        //System.out.println("debug:" +rs.next());
+        Market market = new Market();
+        market.setId(rs.getInt("id"));
+        market.setName(rs.getString("name"));
+        market.setTel(rs.getString("tel"));
+        return market;
     }
 }

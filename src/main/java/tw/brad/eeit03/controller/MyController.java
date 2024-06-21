@@ -6,9 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import tw.brad.eeit03.mapper.MarketRowMapper;
 import tw.brad.eeit03.model.Cust;
 import tw.brad.eeit03.model.Market;
 
@@ -82,21 +81,20 @@ public class MyController {
         }
         jdbc.batchUpdate(sql, sources);
 
-
-
-
-
-
-
-
-
-
-
-
-
         return true;
     }
 
+    @GetMapping("/market/{id}")
+    public Market query(@PathVariable Integer id){
+        String sql = "SELECT id, name, tel FROM market WHERE id = :id";
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", id);
+        Market market = jdbc.queryForObject(sql, map, new MarketRowMapper());
+        //System.out.println(market.getName());
 
+        List<Market> marketList = jdbc.query(sql, map, new MarketRowMapper());
+
+        return market;
+    }
 
 }
